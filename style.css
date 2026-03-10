@@ -86,6 +86,50 @@ h4,
     padding: 8rem 0;
 }
 
+/* HUD Details */
+.hud-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.4;
+}
+
+.hud-data {
+    position: absolute;
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.top-left {
+    top: 20px;
+    left: 20px;
+    border-left: 2px solid var(--primary);
+    padding-left: 10px;
+}
+
+.bottom-right {
+    bottom: 20px;
+    right: 20px;
+    border-right: 2px solid var(--primary);
+    padding-right: 10px;
+}
+
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
 .text-center {
     text-align: center;
 }
@@ -158,6 +202,7 @@ h4,
 
 .nav-links a:hover {
     color: var(--primary);
+    text-shadow: 0 0 10px rgba(var(--primary-rgb), 0.8);
 }
 
 /* Buttons */
@@ -183,8 +228,8 @@ h4,
 }
 
 .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.6);
 }
 
 .btn-outline {
@@ -196,6 +241,7 @@ h4,
 .btn-outline:hover {
     background: var(--primary);
     color: #000;
+    box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.4);
 }
 
 /* Hero Section */
@@ -247,17 +293,47 @@ h4,
     gap: 1.5rem;
 }
 
+.mockup-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
 .book-cover-mockup {
     width: 100%;
     max-width: 450px;
     border-radius: 10px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 20px rgba(var(--primary-rgb), 0.2);
     transition: var(--transition);
     transform: perspective(1000px) rotateY(-15deg);
+    display: block;
+}
+
+.scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    box-shadow: 0 0 15px var(--primary);
+    z-index: 5;
+    animation: scan 4s infinite linear;
+    opacity: 0.6;
+}
+
+@keyframes scan {
+    0% {
+        top: 0%;
+    }
+
+    100% {
+        top: 100%;
+    }
 }
 
 .hero:hover .book-cover-mockup {
     transform: perspective(1000px) rotateY(-5deg);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(var(--primary-rgb), 0.4);
 }
 
 /* About Section */

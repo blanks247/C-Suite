@@ -19,6 +19,12 @@
     <div id="app">
         <div class="grid-bg"></div>
         <div class="aurora"></div>
+        <div id="particles-js"></div>
+        <div class="hud-overlay">
+            <div class="hud-line"></div>
+            <div class="hud-data top-left">SYSTEM: ACTIVE</div>
+            <div class="hud-data bottom-right">LINK: SYNCED</div>
+        </div>
         <header class="header">
             <nav class="nav container">
                 <div class="logo">RISE & LEAD</div>
@@ -47,7 +53,11 @@
                         </div>
                     </div>
                     <div class="hero-visual fade-in delay-3">
-                        <img src="/assets/book-cover.png" alt="Rise & Lead Book Cover" class="book-cover-mockup">
+                        <div class="mockup-wrapper">
+                            <img src="/assets/book-cover.png" alt="The New C-Suite Book Cover"
+                                class="book-cover-mockup">
+                            <div class="scan-line"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="hero-bg-overlay"></div>
