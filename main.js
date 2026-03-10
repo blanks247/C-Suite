@@ -112,12 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Parallax hero elements
+    // Simplified Parallax for hero mockup (Subtle tilt, no confusing rotation)
     document.addEventListener('mousemove', (e) => {
         if (window.innerWidth <= 992) return;
-        const x = (window.innerWidth / 2 - e.pageX) / 30;
-        const y = (window.innerHeight / 2 - e.pageY) / 30;
+        const x = (window.innerWidth / 2 - e.pageX) / 50; // Increased divisor for subtler effect
+        const y = (window.innerHeight / 2 - e.pageY) / 50;
         const mockup = document.querySelector('.mockup-wrapper');
-        if (mockup) mockup.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
+        if (mockup) {
+            // Keep it mostly upright with just a gentle 3D tilt
+            mockup.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
+        }
     });
 });
