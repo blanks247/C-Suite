@@ -26,6 +26,41 @@ body {
     color: var(--text-light);
     line-height: 1.6;
     overflow-x: hidden;
+    cursor: none;
+    /* Hide default for custom cursor */
+}
+
+/* Custom Cursor */
+.custom-cursor {
+    width: 6px;
+    height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.cursor-follower {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.1s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cursor-follower::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(var(--primary-rgb), 0.1);
+    border-radius: 50%;
 }
 
 h1,

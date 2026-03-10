@@ -1,86 +1,123 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ScrollReveal-like animations
-    const observerOptions = {
-        threshold: 0.1
-    };
+    // Custom Cursor
+    const cursor = document.querySelector('.custom-cursor');
+    const follower = document.querySelector('.cursor-follower');
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-visible');
-            }
-        });
-    }, observerOptions);
-
-    // Apply observer to sections and cards
-    document.querySelectorAll('.section, .card, .step').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)';
-        observer.observe(el);
-    });
-
-    // Handle visible class
-    const style = document.createElement('style');
-    style.innerHTML = `
-        .fade-in-visible {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-    `;
-    document.head.appendChild(style);
-
-    // Parallax effect for the book mockup
     document.addEventListener('mousemove', (e) => {
-        const mockup = document.querySelector('.book-cover-mockup');
-        if (!mockup) return;
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
 
-        const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-        const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-
-        // Only apply desktop parallax
-        if (window.innerWidth > 992) {
-            mockup.style.transform = `perspective(1000px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        }
+        // Follower with lag
+        setTimeout(() => {
+            follower.style.left = e.clientX - 17 + 'px';
+            follower.style.top = e.clientY - 17 + 'px';
+        }, 50);
     });
 
-    // Scroll Reveal Animation
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+    // Particle System (Cyberpunk v2)
+    const initParticles = () => {
+        const container = document.getElementById('particles-js');
+        if (!container) return;
+        const canvas = document.createElement('canvas');
+        container.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
+        const resize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+        window.addEventListener('resize', resize);
+        resize();
+
+        class P {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(0, 210, 255, 0.5)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 80; i++) particles.push(new P());
+
+        const animate = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            // Draw lines between close particles
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 100) {
+                        ctx.strokeStyle = `rgba(0, 210, 255, ${0.1 * (1 - dist / 100)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        };
+        animate();
+    };
+    initParticles();
+
+    // HUD Data Stream Fake Code
+    const stream = document.querySelector('.hud-data-stream');
+    if (stream) {
+        const codes = ["0x1A2B", "LINK_STABLE", "SYNC_98%", "LATENCY: 4ms", "AUTH_GRANTED", "ENCRYPT_ACTIVE"];
+        setInterval(() => {
+            const line = document.createElement('div');
+            line.textContent = codes[Math.floor(Math.random() * codes.length)];
+            line.style.opacity = '0';
+            line.style.transition = '0.5s';
+            stream.prepend(line);
+            setTimeout(() => line.style.opacity = '1', 10);
+            if (stream.children.length > 10) stream.lastChild.remove();
+        }, 1500);
+    }
+
+    // Scroll Reveal
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-visible'); // Changed from 'visible' to 'fade-in-visible' to match existing CSS
-                // Once element is visible, stop observing
+                entry.target.classList.add('visible');
                 observer.unobserve(entry.target);
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.1 });
 
-    // Select all sections and cards to animate
-    const animateElements = document.querySelectorAll('.section, .card, .step, .about-card');
-
-    animateElements.forEach(el => {
-        // Removed el.classList.add('reveal'); as it's not defined in the provided CSS
-        el.style.opacity = '0'; // Added initial styles for animation
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)';
+    document.querySelectorAll('.section, .card, .step, .about-card').forEach(el => {
+        el.classList.add('reveal');
         observer.observe(el);
     });
 
-    // Smooth scroll for nav links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        });
+    // Parallax hero elements
+    document.addEventListener('mousemove', (e) => {
+        if (window.innerWidth <= 992) return;
+        const x = (window.innerWidth / 2 - e.pageX) / 30;
+        const y = (window.innerHeight / 2 - e.pageY) / 30;
+        const mockup = document.querySelector('.mockup-wrapper');
+        if (mockup) mockup.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
     });
 });
