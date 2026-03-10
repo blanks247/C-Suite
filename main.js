@@ -82,20 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     initParticles();
 
-    // HUD Data Stream Fake Code
-    const stream = document.querySelector('.hud-data-stream');
-    if (stream) {
-        const codes = ["0x1A2B", "LINK_STABLE", "SYNC_98%", "LATENCY: 4ms", "AUTH_GRANTED", "ENCRYPT_ACTIVE"];
-        setInterval(() => {
-            const line = document.createElement('div');
-            line.textContent = codes[Math.floor(Math.random() * codes.length)];
-            line.style.opacity = '0';
-            line.style.transition = '0.5s';
-            stream.prepend(line);
-            setTimeout(() => line.style.opacity = '1', 10);
-            if (stream.children.length > 10) stream.lastChild.remove();
-        }, 1500);
-    }
+    // HUD Data Stream removed as per user request
 
     // Scroll Reveal
     const observer = new IntersectionObserver((entries) => {
@@ -112,15 +99,5 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Simplified Parallax for hero mockup (Subtle tilt, no confusing rotation)
-    document.addEventListener('mousemove', (e) => {
-        if (window.innerWidth <= 992) return;
-        const x = (window.innerWidth / 2 - e.pageX) / 50; // Increased divisor for subtler effect
-        const y = (window.innerHeight / 2 - e.pageY) / 50;
-        const mockup = document.querySelector('.mockup-wrapper');
-        if (mockup) {
-            // Keep it mostly upright with just a gentle 3D tilt
-            mockup.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
-        }
-    });
+    // Parallax hero elements removed as per user request to avoid confusion
 });
